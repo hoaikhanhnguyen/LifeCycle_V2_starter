@@ -4,6 +4,7 @@ package com.daclink.lifecycle_v2;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +25,12 @@ public class MainActivity extends AppCompatActivity {
     TextView mTextView;
     boolean messageOne = false;
 
+    static Intent intentFactory(Context applicationContext, boolean showMessage1Child) {
+        Intent intent = new Intent(applicationContext, MainActivity.class);
+        intent.putExtra(BUTTON_STATE, showMessage1Child);
+        return intent;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +40,10 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(binding.getRoot());
 
+        messageOne = getIntent().getBooleanExtra(BUTTON_STATE, false);
+
         if (savedInstanceState != null) {
-            messageOne = savedInstanceState.getBoolean(BUTTON_STATE, true);
+            messageOne = savedInstanceState.getBoolean(BUTTON_STATE, false);
         }
 
         button = binding.button;
@@ -49,7 +58,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //TODO: add long click listener
+        button.setOnLongClickListener(v -> {
+            Intent intent = ChildActivity.intentFactory(getApplicationContext(), messageOne);
+            startActivity(intent);
+            return false;
+        });
 
     }
 
