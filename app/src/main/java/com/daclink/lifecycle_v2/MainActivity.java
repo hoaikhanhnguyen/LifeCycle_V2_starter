@@ -50,12 +50,9 @@ public class MainActivity extends AppCompatActivity {
         mTextView = binding.textView;
         getMessage();
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                messageOne = !messageOne;
-                getMessage();
-            }
+        button.setOnClickListener(view -> {
+            messageOne = !messageOne;
+            getMessage();
         });
 
         button.setOnLongClickListener(v -> {
